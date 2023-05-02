@@ -1,68 +1,70 @@
-// const blogrouter = require("./blogRoutes");
+const blogRouter = require("./blogRoutes");
+const videoRouter = require("./videoRoutes");
+const categorieRouter = require("./categoriesRoute");
 const { Router } = require("express");
 const passport = require("passport");
 const router = Router();
 
 // Blog routes
-// router.use("/blog", blogrouter);
+router.use("/blog", blogRouter);
 
 // Video routes
-// router.use("/blog", videoRouter);
+router.use("/video", videoRouter);
+
+// Categories routes
+router.use("/categories", categorieRouter);
 
 // Home
-router.get('/' , (req,res, next) => {
-    res.render('index')
-})
-
-// Registar usuario
-router.get('/signup' , (req,res, next) => {
-    res.render('signup')
-})
-
-router.post('/signup' ,passport.authenticate('local-signup', {
-    successRedirect: '/profile',
-    failureRedirect: '/signup',
-    passReqToCallback: true
-}))
-
-
-// Login usuario
-router.get('/signin' , (req,res, next) => {
-    res.render('signin')
-})
-
-router.post('/signin', passport.authenticate('local-signin', {
-    successRedirect: '/profile',
-    failureRedirect: '/signin',
-    failureFlash: true
-  }));
-
-  router.get('/logout', (req, res, next) => {
-    req.logout(function(err) {
-        if (err) { return next(err); }
-        res.redirect('/');
-    });
+router.get('/', (req, res, next) => {
+  res.render('index');
 });
 
+// Registar usuario
+router.get('/signup', (req, res, next) => {
+  res.render('signup');
+});
+
+router.post('/signup', passport.authenticate('local-signup', {
+  successRedirect: '/profile',
+  failureRedirect: '/signup',
+  passReqToCallback: true
+}));
+
+// Login usuario
+router.get('/signin', (req, res, next) => {
+  res.render('signin');
+});
+
+router.post('/signin', passport.authenticate('local-signin', {
+  successRedirect: '/profile',
+  failureRedirect: '/signin',
+  failureFlash: true
+}));
+
+router.get('/logout', (req, res, next) => {
+  req.logout(function(err) {
+    if (err) { return next(err); }
+    res.redirect('/');
+  });
+});
 
 // Proteger rutas
-router.use((req, res , next) => {
-    isLogIn(req, res, next);
-    next()
-})
+router.use((req, res, next) => {
+  isLogIn(req, res, next);
+  next();
+});
 
 // Perfil usuario
-router.get('/profile' ,(req,res, next) => {
-    res.render('profile')
-})
-
+router.get('/profile', (req, res, next) => {
+  res.render('profile');
+});
 
 // Ruta protegida
 function isLogIn(req, res, next) {
-    if (req.isAuthenticated()) {
-      return next();
-    }
-    return res.redirect("/signin");
+  if (req.isAuthenticated()) {
+    return next();
   }
+  return res.redirect('/signin');
+}
 
 module.exports = router;
