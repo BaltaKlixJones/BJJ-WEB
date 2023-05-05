@@ -19,12 +19,7 @@ module.exports = (sequelize) => {
         title: {
           type: DataTypes.STRING,
           allowNull: false,
-        },
-        date : {
-          type: DataTypes.DATE,
-          allowNull: false,
-          defaultValue: DataTypes.NOW
-        },
+        }
       },
       { timestamps: false }
     );

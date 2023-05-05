@@ -44,8 +44,8 @@ sequelize.models = Object.fromEntries(capsEntries);
 const { User, Blog, Video, Categories } = sequelize.models;
 
 // Relaciones entre tablas
-// Categories.belongsToMany(Video, { through: "VideoCategories" });
-// Video.belongsTo(Categories);
+Categories.belongsToMany(Video, { through: "VideoCategories" });
+Video.belongsTo(Categories);
 
 
 module.exports = {

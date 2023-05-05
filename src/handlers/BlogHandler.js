@@ -17,10 +17,10 @@ const {
   };
   
   const postBlogHandler = async (req, res) => {
-    const { title, image, date } = req.body;
+    const { title, image } = req.body;
   
     try {
-      const newBlog = await postBlogController(title, image, date);
+      const newBlog = await postBlogController(title, image);
       !newBlog
         ? res.status(400).json({ error: "POST not created" })
         : res.status(200).json(newBlog);

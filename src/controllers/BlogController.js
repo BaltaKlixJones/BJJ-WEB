@@ -5,21 +5,20 @@ const getBlogController = async () => {
   return blog;
 };
 
-const postBlogController = async (title, image, date) => {
+const postBlogController = async (title, image) => {
   if (!title || !image) {
     throw Error("Missing data");
   }
   const blog = await Blog.create({
     image,
     title,
-    date,
   });
   return blog;
 };
 
 const putBlogController = async (
     id,
-    { image, title, date },
+    { image, title },
     res
   ) => {
     const blogUpdate = await Blog.findByPk(id);
@@ -28,7 +27,6 @@ const putBlogController = async (
       : blogUpdate.update({
           image,
           title,
-          date,
         });
     return blogUpdate;
   };

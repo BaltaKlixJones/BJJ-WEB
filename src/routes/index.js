@@ -4,6 +4,8 @@ const categorieRouter = require("./categoriesRoute");
 const { Router } = require("express");
 const passport = require("passport");
 const router = Router();
+const userRouter = require("./usersRoutes");
+
 
 // Blog routes
 router.use("/blog", blogRouter);
@@ -13,6 +15,9 @@ router.use("/video", videoRouter);
 
 // Categories routes
 router.use("/categories", categorieRouter);
+
+// Users routes
+router.use("/users", userRouter);
 
 // Home
 router.get('/', (req, res, next) => {
@@ -48,11 +53,14 @@ router.get('/logout', (req, res, next) => {
   });
 });
 
+
+
+
 // Proteger rutas
-router.use((req, res, next) => {
-  isLogIn(req, res, next);
-  next();
-});
+// router.use((req, res, next) => {
+//   isLogIn(req, res, next);
+//   next();
+// });
 
 // Perfil usuario
 router.get('/profile', (req, res, next) => {
@@ -60,11 +68,11 @@ router.get('/profile', (req, res, next) => {
 });
 
 // Ruta protegida
-function isLogIn(req, res, next) {
-  if (req.isAuthenticated()) {
-    return next();
-  }
-  return res.redirect('/signin');
-}
+// function isLogIn(req, res, next) {
+//   if (req.isAuthenticated()) {
+//     return next();
+//   }
+//   return res.redirect('/signin');
+// }
 
 module.exports = router;

@@ -1,3 +1,7 @@
+const express = require("express");
+const {Router} = require("express");
+const routerUsers = express.Router();
+
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const Sequelize = require("sequelize");
@@ -12,6 +16,7 @@ const sequelize = new Sequelize(
 );
 
 const User = require("../models/user")(sequelize);
+
 
 // Serializar el usuario
 passport.serializeUser((user, done) => {
@@ -53,7 +58,7 @@ passport.use(
     }
   )
 );
-
+// Logeo de usuario
 passport.use('local-signin', new LocalStrategy({
   usernameField: 'email',
   passwordField: 'password',
@@ -70,3 +75,28 @@ passport.use('local-signin', new LocalStrategy({
   }
   return done(null, user);
 }));
+
+// Editar usuario
+// passport.use('local', new LocalStrategy(
+//   { usernameField: 'email',
+//     passwordField: 'password',
+//     passReqToCallback: true
+// },
+//   async (email, password,status, done) => {
+//     try {
+//       const user = await User.findOne({ where: { email } });
+
+//       if (!user) {
+//         return done(null, false, { message: 'Correo electrónico no registrado' });
+//       }
+
+//       if (!user.comparePassword(password)) {
+//         return done(null, false, { message: 'Contraseña incorrecta' });
+//       }
+
+//       return done(null, user);
+//     } catch (error) {
+//       return done(error);
+//     }
+//   }
+// ));
