@@ -6,7 +6,6 @@ const passport = require("passport");
 const router = Router();
 const userRouter = require("./usersRoutes");
 
-
 // Blog routes
 router.use("/blog", blogRouter);
 
@@ -24,32 +23,64 @@ router.get('/', (req, res, next) => {
   res.render('index');
 });
 
+// Home
+router.get('/', (req, res, next) => {
+  res.render('index');
+});
+
 // Registar usuario
 router.get('/signup', (req, res, next) => {
   res.render('signup');
 });
 
 router.post('/signup', passport.authenticate('local-signup', {
-  successRedirect: '/profile',
-  failureRedirect: '/signup',
+  successRedirect: '/users',
+  failureRedirect: '/users',
   passReqToCallback: true
-}));
+}), (req, res) => {
+  return res.json({ data: req.user });
+  
+});
 
 // Login usuario
 router.get('/signin', (req, res, next) => {
   res.render('signin');
 });
 
+// router.post('/signin', passport.authenticate('local-signin', {
+//   successRedirect: '/Home',
+//   failureRedirect: '/signIn',
+//   failureFlash: true
+// }));
+
+// router.post('/signin', passport.authenticate('local-signin', {
+//   successRedirect: '/Home',
+//   failureRedirect: '/signin',
+//   failureFlash: true
+// }), (req, res) => {
+//   res.json({ user: req.user });
+// });
+
+// router.post('/signin', passport.authenticate('local-signin'), (req, res) => {
+//   res.json({ user: req.user });
+// }
+// );
+
+
+
 router.post('/signin', passport.authenticate('local-signin', {
-  successRedirect: '/profile',
-  failureRedirect: '/signin',
+  successRedirect: '/users',
+  failureRedirect: '/users',
   failureFlash: true
-}));
+}), (req, res) => {
+    return res.json({ data: req.user });
+    
+  });
 
 router.get('/logout', (req, res, next) => {
   req.logout(function(err) {
     if (err) { return next(err); }
-    res.redirect('/');
+    
   });
 });
 
@@ -63,16 +94,18 @@ router.get('/logout', (req, res, next) => {
 // });
 
 // Perfil usuario
-router.get('/profile', (req, res, next) => {
+router.get('/profile',  (req, res, next) => {
+  isLogIn(req, res, next);
   res.render('profile');
 });
 
-// Ruta protegida
-// function isLogIn(req, res, next) {
-//   if (req.isAuthenticated()) {
-//     return next();
-//   }
-//   return res.redirect('/signin');
-// }
+
+// // Ruta protegida
+function isLogIn(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next();
+  }
+  return res.redirect('/signIn');
+}
 
 module.exports = router;

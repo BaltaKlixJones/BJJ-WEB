@@ -8,6 +8,7 @@ const passport = require('passport');
 const session = require('express-session')
 require('dotenv').config(); 
 const flash = require('connect-flash');
+const cors = require('cors');
 
 const { SECRET } = process.env;
 
@@ -41,6 +42,7 @@ server.use(flash());
 server.use(passport.initialize());
 server.use(passport.session());
 // ACCESO A LA API
+server.use(cors());
 server.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Credentials', 'true');
@@ -48,6 +50,13 @@ server.use((req, res, next) => {
   res.header('Access-Control-Allow-Headers', 'Origin, Content-Type, X-Auth-Token, X-Requested-With, Accept'); 
   next();
 });
+
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204 
+}
+
+server.use(cors(corsOptions));
 
 server.use((req, res , next) => {
   server.locals.signupMessage = req.flash("signupMessage")
