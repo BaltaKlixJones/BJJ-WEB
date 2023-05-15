@@ -1,6 +1,7 @@
 const blogRouter = require("./blogRoutes");
 const videoRouter = require("./videoRoutes");
 const categorieRouter = require("./categoriesRoute");
+const paymentRouter = require("./paymentRoute");
 const { Router } = require("express");
 const passport = require("passport");
 const router = Router();
@@ -18,15 +19,15 @@ router.use("/categories", categorieRouter);
 // Users routes
 router.use("/users", userRouter);
 
-// Home
-router.get('/', (req, res, next) => {
-  res.render('index');
-});
+// payment Route
+
+router.use("/payment", paymentRouter);
 
 // Home
 router.get('/', (req, res, next) => {
   res.render('index');
 });
+
 
 // Registar usuario
 router.get('/signup', (req, res, next) => {

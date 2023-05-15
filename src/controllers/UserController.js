@@ -5,6 +5,15 @@ const getUserController = async () => {
     return user;
   };
 
+
+  const deleteUserController = async (id) => {
+    const userDelete = await User.findByPk(id);
+    if (!userDelete) {
+      return res.status(400).json({ error: "User not found" });
+    }
+    return userDelete.destroy();
+  }
+
   const putUserController = async (
     id,
     { email, password, status },
@@ -24,5 +33,6 @@ const getUserController = async () => {
 
 module.exports = {
     getUserController,
-    putUserController
+    putUserController,
+    deleteUserController
 }

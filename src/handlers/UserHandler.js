@@ -1,4 +1,4 @@
-const {getUserController, putUserController} = require('../controllers/userController.js');
+const {getUserController, putUserController, deleteUserController} = require('../controllers/userController.js');
 
 const getUserHandler = async (req, res) => {
     try {
@@ -11,6 +11,17 @@ const getUserHandler = async (req, res) => {
     }
   };
 
+
+const deleteUserHandler = async (req, res) => {
+    const { id } = req.params;
+  
+    try {
+      await deleteUserController(id);
+      return res.status(200).json({ message: "Usuario eliminado" });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+}
 
   const putUserHandler = async (req, res) => {
     const { id } = req.params;
@@ -29,5 +40,6 @@ const getUserHandler = async (req, res) => {
 
   module.exports = {
     getUserHandler,
-    putUserHandler
+    putUserHandler,
+    deleteUserHandler
     }
