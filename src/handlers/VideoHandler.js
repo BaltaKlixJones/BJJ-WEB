@@ -2,7 +2,8 @@ const {
     getVideoController,
     postVideoController,
     putVideoController,
-    deleteVideoController
+    deleteVideoController,
+    getVideosByCategoryId
   } = require("../controllers/VideoController.js");
   
   const getVideoHandler = async (req, res) => {
@@ -15,7 +16,24 @@ const {
       res.status(400).json({ error: error.message });
     }
   };
+
+
+  const getVideosByCategoryIdHandler = async (req, res) => {
+    const categoryId = req.params.id;
+    try {
+      const videos = await getVideosByCategoryId(categoryId);
+      videos.length === 0
+        ? res.status(400).send("No hay Posteos")
+        : res.status(200).json(videos);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  };
   
+  
+  
+
+
   const postVideoHandler = async (req, res) => {
     const { title, video, thumbnail, category, date } = req.body;
   
@@ -29,16 +47,6 @@ const {
     }
   };
   
-  // const putVideoHandler = async (req, res) => {
-  //   const { id } = req.params;
-  
-  //   try {
-  //     await putVideoController(id, req.body);
-  //     return res.status(200).json({ message: "Post updated" });
-  //   } catch (error) {
-  //     res.status(400).json({ error: error.message });
-  //   }
-  // };
 
   const putVideoHandler = async (req, res) => {
     const {id} = req.params;
@@ -70,5 +78,6 @@ const {
     getVideoHandler,
     postVideoHandler,
     putVideoHandler,
-    deleteVideoHandler
+    deleteVideoHandler,
+    getVideosByCategoryIdHandler
   };

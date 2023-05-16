@@ -2,7 +2,7 @@ const { Video } = require("../db.js");
 const { Categories } = require('../db.js');
 
 const getVideoController = async () => {
-
+ 
   const video = await Video.findAll({
     include: [{
       model: Categories,
@@ -11,6 +11,19 @@ const getVideoController = async () => {
   });
   return video;
 };
+
+const getVideosByCategoryId = async (categoryId) => {
+  const videos = await Video.findAll({
+    include: {
+      model: Categories,
+      where: { id: categoryId }
+    }
+  });
+  return videos;
+};
+
+
+
 
 const postVideoController = async (video, title, thumbnail, category, date) => {
   if (!title || !video || !category) {
@@ -30,8 +43,8 @@ const postVideoController = async (video, title, thumbnail, category, date) => {
   }
 
   const obj = {
-    video,
     title,
+    video,
     thumbnail,
     category: categorias.id, // Asigna el ID de la categoría
     date,
@@ -44,58 +57,8 @@ const postVideoController = async (video, title, thumbnail, category, date) => {
 
   return newVideo;
 };
-// const postVideoController = async (video, title, thumbnail,category, date) => {
-//   if (!title || !video || !category) {
-//     throw Error("Missing data");
-//   }
-  // const newVideo = await Video.create({
-  //   video,
-  //   title,
-  //   thumbnail,
-  //   category,
-  //   date
-  // });
-  // return newVideo;
 
-  // const obj = {
-  //   video,
-  //   title,
-  //   thumbnail,
-  //   category,
-  //   date
-  // }
-  // const newVideo = await Video.create(obj);
-
-  // const categorias = await Categories.findOne({
-  //   where: {
-  //     name: category
-  //   }
-  // })
-
-//   console.log(newVideo.__proto__)
-//   await newVideo.createCategory(categorias);
-
-//   return newVideo;
-
-
-// };
-
-
-// const putVideoController = async (id, { thumbnail, title, video, category, date}, res) => {
-//   const videoUpdate = await Video.findByPk(id);
-//   !videoUpdate
-//     ? res.status(400).json({ error: "Video not found" })
-//     : videoUpdate.update({
-//         video,
-//         title,
-//         thumbnail,
-//         category,
-//         date
-//       });
-//   return videoUpdate;
-// };
-
-const putVideoController = async (id, { thumbnail, title, video, category, date}, res) => {
+const putVideoController = async (id, {title, video, thumbnail, category, date}, res) => {
   const videoUpdate = await Video.findByPk(id, { include: [Categories] });
   if (!videoUpdate) {
     res.status(400).json({ error: "Video not found" });
@@ -106,8 +69,8 @@ const putVideoController = async (id, { thumbnail, title, video, category, date}
     }
     await videoUpdate.setCategory(categorias);
     await videoUpdate.update({
-      video,
       title,
+      video,
       thumbnail,
       category: categorias.name,
       date
@@ -130,4 +93,5 @@ module.exports = {
   postVideoController,
   putVideoController,
   deleteVideoController,
+  getVideosByCategoryId
 };

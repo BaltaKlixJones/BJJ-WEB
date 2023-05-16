@@ -25,6 +25,15 @@ module.exports = (sequelize) => {
         type: DataTypes.ENUM("active", "inactive"),
         defaultValue: "active",
       },
+      subscription: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
+      subscriptionDate: {
+        type: DataTypes.DATEONLY,
+          allowNull: false,
+          defaultValue: DataTypes.NOW
+      },
     },
     { timestamps: false }
   );
