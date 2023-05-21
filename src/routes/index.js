@@ -7,6 +7,7 @@ const passport = require("passport");
 const router = Router();
 const userRouter = require("./usersRoutes");
 
+
 // Blog routes
 router.use("/blog", blogRouter);
 

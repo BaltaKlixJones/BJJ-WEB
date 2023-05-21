@@ -2,6 +2,7 @@ require("dotenv").config();
 const { Sequelize, DataTypes } = require("sequelize");
 const fs = require("fs");
 const path = require("path");
+const cron = require("node-cron");
 //aaa
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME ,DB_PORT} = process.env;
 
@@ -47,6 +48,27 @@ const { User, Blog, Video, Categories } = sequelize.models;
 Categories.belongsToMany(Video, { through: "VideoCategories" });
 Video.belongsTo(Categories);
 
+
+// Tarea programada para actualizar el estado de suscripcion de los usuarios
+// cron.schedule("*/2 * * * *", async ()=> {
+//   const twoMinutesAgo = new Date();
+//   twoMinutesAgo.setMinutes(twoMinutesAgo.getMinutes() - 2);
+
+//   const usersToUpdate = await User.findAll({
+//     where: {
+//       status: "active",
+//       subscription: true,
+//       subscriptionDate: {
+//         [Sequelize.Op.lt]: twoMinutesAgo,
+//       },
+//     },
+//   })
+
+//   for (const user of usersToUpdate) {
+//     user.subscription = false;
+//     await user.save();
+//   }
+// })
 
 module.exports = {
   ...sequelize.models, 

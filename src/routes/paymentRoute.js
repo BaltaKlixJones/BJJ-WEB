@@ -2,28 +2,27 @@ const { Router } = require("express");
 const mercadopago = require("mercadopago");
 const router = require(".");
 require("dotenv").config();
-// const { User } = require("../db");
+const { User } = require("../db");
 require("dotenv").config();
-const {ACCESS_TOKEN} = process.env;
+const { ACCESS_TOKEN_PRUEBA } = process.env;
 
 const paymentRouter = Router();
 
 mercadopago.configure({
-  access_token:
-    ACCESS_TOKEN,
+  access_token: ACCESS_TOKEN_PRUEBA,
 });
 
-paymentRouter.post("/create_preference", (req, res) => {
+paymentRouter.post("/create_preference/:id", (req, res) => {
   let preference = {
     items: [
       {
-        title: "Descripcion del producto",
+        title: "Cris Velasco BJJ",
         unit_price: 1,
         quantity: 1,
       },
     ],
     back_urls: {
-      success: "http://localhost:5173/paymentApproved",
+      success: "http://localhost:5173/paymentAproved",
       failure: "http://localhost:5173/payementFailed",
       pending: "",
     },
@@ -33,13 +32,39 @@ paymentRouter.post("/create_preference", (req, res) => {
 
   mercadopago.preferences
     .create(preference)
-    .then(
-      (response) => 
-    //   console.log(response),
-      res.status(200).json({ response }))
+    .then((response) => {
+      const paymentId = response.body.id;
+      const { id } = req.params;
+
+      User.findByPk(id)
+        .then((user) => {
+          if (user) {
+            User.update(
+              {
+                subscription: true,
+                subscriptionDate: new Date(),
+              },
+              {
+                where: { id: user.id },
+              }
+            )
+              .then(() => {
+                res.status(200).json({ message: "Pago exitoso" });
+              })
+              .catch((error) => {
+                console.log(error);
+                res.status(400).json({ error: error.message });
+              });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          res.status(400).json({ error: error.message });
+        });
+    })
     .catch((error) => {
       console.log(error);
-      res.status(400).send({ error: error.message });
+      res.status(400).json({ error: error.message });
     });
 });
 

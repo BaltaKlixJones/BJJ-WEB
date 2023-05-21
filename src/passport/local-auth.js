@@ -58,6 +58,8 @@ passport.use(
     }
   )
 );
+
+
 // Logeo de usuario
 passport.use('local-signin', new LocalStrategy({
   usernameField: 'email',
