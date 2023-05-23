@@ -22,7 +22,7 @@ module.exports = (sequelize) => {
         allowNull: false,
       },
       status: {
-        type: DataTypes.ENUM("active", "inactive"),
+        type: DataTypes.STRING,
         defaultValue: "active",
       },
       subscription: {

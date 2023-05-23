@@ -78,27 +78,26 @@ passport.use('local-signin', new LocalStrategy({
   return done(null, user);
 }));
 
-// Editar usuario
-// passport.use('local', new LocalStrategy(
-//   { usernameField: 'email',
-//     passwordField: 'password',
-//     passReqToCallback: true
-// },
-//   async (email, password,status, done) => {
-//     try {
-//       const user = await User.findOne({ where: { email } });
+// Cambiar contraseña
+passport.use('local-changePassword', new LocalStrategy(
+  { usernameField: 'email',
+    passwordField: 'password',
+    passReqToCallback: true
+},
+  async (req, email, password, done) => {
+    try {
+      const user = await User.findOne({ where: { email: req.body.email } });
+      if (!user) {
+        return done(null, false, { message: 'Correo electrónico no registrado' });
+      }
 
-//       if (!user) {
-//         return done(null, false, { message: 'Correo electrónico no registrado' });
-//       }
-
-//       if (!user.comparePassword(password)) {
-//         return done(null, false, { message: 'Contraseña incorrecta' });
-//       }
-
-//       return done(null, user);
-//     } catch (error) {
-//       return done(error);
-//     }
-//   }
-// ));
+      const hashedPassword = await User.encryptPassword(password, 10);
+      user.password = hashedPassword;
+      await user.save();
+     
+      return done(null, user);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+));

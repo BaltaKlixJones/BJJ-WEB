@@ -44,6 +44,15 @@ router.post('/signup', passport.authenticate('local-signup', {
   
 });
 
+router.put("/update", passport.authenticate("local-changePassword", {
+  successRedirect: '/users',
+  failureRedirect: "/users",
+  passReqToCallback: true,
+}), (req, res) => {
+  return res.json({ data: req.user }
+  )
+})
+
 // Login usuario
 router.get('/signin', (req, res, next) => {
   res.render('signin');
