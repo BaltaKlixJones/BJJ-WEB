@@ -34,6 +34,30 @@ module.exports = (sequelize) => {
           allowNull: false,
           defaultValue: DataTypes.NOW
       },
+      subscriptionDateEnd : {
+       type: DataTypes.DATE,
+       allowNull: false,
+       defaultValue: DataTypes.NOW,
+       get() {
+        const subscriptionType = this.subscriptionType; 
+    const endDate = new Date(this.subscriptionDate); 
+
+        if (subscriptionType === 1) {
+          endDate.setMonth(endDate.getMonth() + 1);
+        } else if (subscriptionType === 3){
+          endDate.setMonth(endDate.getMonth() + 3);
+        }
+        return endDate;
+       },
+      },
+       subscriptionType: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        defaultValue: 0,
+        validate: {
+          isIn: [[0, 1, 3]]
+        }
+       },
     },
     { timestamps: false }
   );

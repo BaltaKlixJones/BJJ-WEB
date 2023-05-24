@@ -16,23 +16,40 @@ const getUserController = async () => {
     return userDelete.destroy();
   }
 
-  const putUserController = async (
-    id,
-    { email, password, status },
-    res
-  ) => {
+  // const putUserController = async (
+  //   id,
+  //   { email, password, status },
+  //   res
+  // ) => {
+  //   const userUpdate = await User.findByPk(id);
+  //   !userUpdate
+  //     ? res.status(400).json({ error: "User not found" })
+  //     : userUpdate.update({
+  //       email,
+  //       password,
+  //       status,
+  //       });
+  //   return userUpdate;
+  // };
+  const putUserController = async (id, { email, password, status, subscription, subscriptionDate, subscriptionDateEnd, subscriptionType }, res) => {
     const userUpdate = await User.findByPk(id);
-    !userUpdate
-      ? res.status(400).json({ error: "User not found" })
-      : userUpdate.update({
+    if (!userUpdate) {
+      res.status(400).json({ error: "User not found" });
+    } else {
+      await userUpdate.update({
         email,
         password,
         status,
-        });
+        subscription,
+        subscriptionDate,
+        subscriptionDateEnd,
+        subscriptionType,
+      });
+    }
     return userUpdate;
   };
 
-// Verificar suscripciones
+//Verificar suscripciones
   // cron.schedule("*/1 * * * *", async () => {
   //   console.log("Running cron job");
   //   const oneMinuteAgo = new Date();
@@ -53,7 +70,7 @@ const getUserController = async () => {
   
   //   for (const user of usersToUpdate) {
   //     try {
-  //       if ( user.id == "fc7f972e-6037-431b-8d4d-94daa3b3e4d3" ) {
+  //       if ( user.email == "balta98_@hotmail.com" ) {
   //         continue;
   //       }
   //       user.subscription = false;
@@ -64,6 +81,37 @@ const getUserController = async () => {
   //     }
   //   }
   // });
+  cron.schedule("0 */12 * * *", async () => {
+    console.log("Running cron job");
+  
+    const currentDate = new Date();
+  
+    const usersToUpdate = await User.findAll({
+      where: {
+        status: "active",
+        subscription: true,
+        subscriptionType: 3,
+        subscriptionDateEnd: {
+          [Sequelize.Op.lt]: currentDate,
+        },
+      },
+    });
+  
+    for (const user of usersToUpdate) {
+      try {
+        if (user.email === "balta98_@hotmail.com") {
+          continue;
+        }
+  
+        user.subscription = false;
+        await user.save();
+        console.log("User saved:", user.id);
+      } catch (error) {
+        console.error("Error saving user:", error);
+      }
+    }
+  });
+
 
 module.exports = {
     getUserController,
