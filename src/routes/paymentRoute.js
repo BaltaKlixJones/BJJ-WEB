@@ -133,7 +133,6 @@ paymentRouter.post("/createPlan/:id", (req, res) => {
                     subscriptionDate: currentDate,
                     subscriptionDateEnd: subscriptionDateEnd,
                     subscriptionType: 1,
-                   
                   },
                   {
                     where: { id: user.id },

@@ -6,8 +6,8 @@ const { Router } = require("express");
 const passport = require("passport");
 const router = Router();
 const userRouter = require("./usersRoutes");
-
-
+const changePassword = require("./authcontrollerRoutes"); 
+const User = require("../db");
 // Blog routes
 router.use("/blog", blogRouter);
 
@@ -21,8 +21,27 @@ router.use("/categories", categorieRouter);
 router.use("/users", userRouter);
 
 // payment Route
-
 router.use("/payment", paymentRouter);
+
+// Authcontroller Route
+router.use("/changePassword", changePassword);
+
+// router.get("/getUserByEmailToken/:token", (req, res) => {
+//   const token = req.params.token;
+//   res.json({ token });
+// })
+
+router.get('/getUserByEmailToken/:token', (req, res) => {
+  const id = req.params.id;
+  
+  User.findOne({ id: id})
+
+  const user = {
+    email: 'user@example.com'
+  };
+  
+  res.json(user);
+});
 
 // Home
 router.get('/', (req, res, next) => {
