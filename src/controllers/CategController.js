@@ -1,18 +1,18 @@
 const { Categories } = require("../db");
 
 const getCategoriesController = async () => {
-  const categories = await Categories.findAll();
-  return categories;
+  const category = await Categories.findAll();
+  return category;
 };
 
 const postCategoriesController = async (name) => {
   if (!name) {
     throw Error("Missing data");
   }
-  const newCategorie = await Categories.create({
+  const newCategory = await Categories.create({
     name,
   });
-  return newCategorie;
+  return newCategory;
 };
 
 const putCategoriesController = async (

@@ -20,10 +20,10 @@ const {
     const { name } = req.body;
   
     try {
-      const newCategorie = await postCategoriesController(name);
-      !newCategorie
+      const newCategory = await postCategoriesController(name);
+      !newCategory
         ? res.status(400).json({ error: "POST not created" })
-        : res.status(200).json(newCategorie);
+        : res.status(200).json(newCategory);
     } catch (error) {
       res.status(400).json({ error: error.message });
     }

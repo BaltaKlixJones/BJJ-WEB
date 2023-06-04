@@ -50,35 +50,102 @@ const postVideoController = async (video, title, thumbnail, category, date) => {
     date,
   };
 
-  console.log(obj)
-
   const newVideo = await Video.create(obj);
   await newVideo.setCategory(categorias);
 
   return newVideo;
 };
 
-const putVideoController = async (id, {title, video, thumbnail, category, date}, res) => {
-  const videoUpdate = await Video.findByPk(id, { include: [Categories] });
-  if (!videoUpdate) {
-    res.status(400).json({ error: "Video not found" });
-  } else {
-    let categorias = await Categories.findOne({ where: { name: category } });
-    if (!categorias) {
-      categorias = await Categories.create({ name: category });
+// const putVideoController = async (id, {title, video, thumbnail, category, date}, res) => {
+//   const videoUpdate = await Video.findByPk(id, { include: [Categories] });
+//   if (!videoUpdate) {
+//     res.status(400).json({ error: "Video not found" });
+//   } else {
+//     let categorias = await Categories.findOne({ where: { name: category } });
+//     if (!categorias) {
+//       categorias = await Categories.create({ name: category });
+//     }
+//     await videoUpdate.setCategory(categorias);
+//     await videoUpdate.update({
+//       title,
+//       video,
+//       thumbnail,
+//       category: categorias.name,
+//       date
+//     });
+//     return videoUpdate;
+//   }
+// };
+
+const putVideoController = async (id, { title, video, thumbnail, category, date }, res) => {
+  try {
+    const videoUpdate = await Video.findByPk(id, { include: [Categories] });
+    if (!videoUpdate) {
+      res.status(400).json({ error: "Video not found" });
+      return;
     }
-    await videoUpdate.setCategory(categorias);
-    await videoUpdate.update({
+    
+    let categoryInstance;
+    if (category) {
+      categoryInstance = await Categories.findOrCreate({ where: { name: category } });
+    }
+    
+    await videoUpdate.setCategory(categoryInstance && categoryInstance[0]);
+    
+    const updatedVideo = await videoUpdate.update({
       title,
       video,
       thumbnail,
-      category: categorias.name,
-      date
-    });
-    return videoUpdate;
+      date,
+      category,
+    }, { include: [Categories] });
+    
+    res.json(updatedVideo);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: "Internal server error" });
   }
 };
+// const putVideoController = async (id, { title, video, thumbnail, category, date }, res) => {
+//   try {
+//     const videoUpdate = await Video.findByPk(id, { include: [Categories] });
+//     if (!videoUpdate) {
+//       res.status(400).json({ error: "Video not found" });
+//       return;
+//     }
+    
+//     let categoryInstance;
+//     if (category) {
+//       categoryInstance = await Categories.findOrCreate({ where: { name: category } });
+//     }
+    
+//     await videoUpdate.setCategory(categoryInstance && categoryInstance[0]);
+    
+//     const updatedVideo = await videoUpdate.update({
+//       title,
+//       video,
+//       thumbnail,
+//       date
+//     }, { include: [Categories] });
+    
+//     const response = {
+//       id: updatedVideo.id,
+//       title: updatedVideo.title,
+//       video: updatedVideo.video,
+//       thumbnail: updatedVideo.thumbnail,
+//       category: updatedVideo.category,
+//       date: updatedVideo.date,
+//       Category: {
+//         name: categoryInstance ? categoryInstance.name : ""
+//       }
+//     };
 
+//     res.json(response);
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ error: "Internal server error" });
+//   }
+// };
 
 const deleteVideoController = async (id) => {
   const videoDelete = await Video.findByPk(id);

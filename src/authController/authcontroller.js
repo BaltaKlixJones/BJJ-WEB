@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const Sequelize = require("sequelize");
 require("dotenv").config();
-const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_NAME, DB_PORT, PASS_MAIL } = process.env;
 const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`,
   {
@@ -17,7 +17,7 @@ const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
         user: 'baltakj@gmail.com',
-        pass: 'cgkxjkqstddchkcs',
+        pass: PASS_MAIL,
 
 }})
 
@@ -65,26 +65,6 @@ function generarToken() {
     return token;
   }
 
-
-//   router.get('/getUserByEmailToken/:id', (req, res) => {
-//     const id = req.params.id;
-    
-//     User.findById(id)
-//       .then(user => {
-//         if (user) {
-//           // Se encontró el usuario por su id
-//           res.json({ email: user.email });
-//         } else {
-//           // No se encontró ningún usuario con el id proporcionado
-//           res.status(404).json({ error: 'Usuario no encontrado' });
-//         }
-//       })
-//       .catch(error => {
-//         // Ocurrió un error durante la búsqueda del usuario
-//         res.status(500).json({ error: 'Error al buscar el usuario' });
-//       });
-//   });
-  
 
 module.exports = {
     enviarCorreoCambioContrasena

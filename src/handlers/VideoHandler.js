@@ -48,22 +48,34 @@ const {
   };
   
 
-  const putVideoHandler = async (req, res) => {
-    const {id} = req.params;
-    const video = req.body;
+  // const putVideoHandler = async (req, res) => {
+  //   const {id} = req.params;
+  //   const video = req.body;
     
+  //   try {
+  //     const videoUpdated = await putVideoController(id, video);
+  //     if (videoUpdated) {
+  //       res.status(200).json(videoUpdated);
+  //     } else {
+  //       res.status(404).json({ error: "Video not found" });
+  //     }
+  //   } catch (error) {
+  //     res.status(400).json({ error: error.message });
+  //   }
+  // };
+  const putVideoHandler = async (req, res) => {
+    const { id } = req.params;
+    const { title, video, thumbnail, category, date } = req.body;
+  
     try {
-      const videoUpdated = await putVideoController(id, video);
-      if (videoUpdated) {
-        res.status(200).json(videoUpdated);
-      } else {
-        res.status(404).json({ error: "Video not found" });
-      }
+      await putVideoController(id, { title, video, thumbnail, category, date }, res);
     } catch (error) {
-      res.status(400).json({ error: error.message });
+      console.log(error);
+      res.status(500).json({ error: "Internal server error" });
     }
   };
   
+ 
   const deleteVideoHandler = async (req, res) => {
       const { id } = req.params;
       try {
