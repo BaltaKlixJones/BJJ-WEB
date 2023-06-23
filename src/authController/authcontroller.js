@@ -16,7 +16,7 @@ const User = require("../models/user")(sequelize);
 const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-        user: 'baltakj@gmail.com',
+        user: 'crisvelascobjj@gmail.com',
         pass: PASS_MAIL,
 
 }})
@@ -33,7 +33,7 @@ function enviarCorreoCambioContrasena (req, res) {
             const destinatarioId = user.id;
     
             const mailOptions = {
-              from: 'baltakj@gmail.com',
+              from: 'crisvelascobjj@gmail.com',
               to: destinatarioEmail,
               subject: 'Reestablecer Contraseña',
               text: `Hola! ${destinatarioEmail} \n¿Olvidaste tu contraseña? No te preocupes.\n\nIngresa al siguiente link: http://localhost:5173/changePassword/${destinatarioId}.\n\n \t¡No compartas este link con nadie!`
