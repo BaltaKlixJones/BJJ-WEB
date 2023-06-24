@@ -4,51 +4,79 @@ const router = require(".");
 require("dotenv").config();
 const { User } = require("../db");
 require("dotenv").config();
-const { ACCESS_TOKEN_PRUEBA } = process.env;
+const { ACCESS_TOKEN} = process.env;
 const axios = require("axios");
 
 const paymentRouter = Router();
 
 mercadopago.configure({
   access_token:
-    ACCESS_TOKEN_PRUEBA,
+  ACCESS_TOKEN,
 });
+
+
+paymentRouter.post("/create_preference/:id", async (req, res) => {
+
+ const result = await mercadopago.preferences.create({
+  items: [{
+    title: "Cris Velasco BJJ",
+    unit_price: 10000,
+    currency_id: "ARS",
+    quantity: 1,
+  }],
+  back_urls: {
+    success: `http://localhost:5173/paymentAproved/`,
+    failure: `http://localhost:5173/paymentFailed/`,
+    pending: "",
+  },
+  auto_return: "approved",
+  //  notification_url: `https://afa7-2800-22c3-80-d5-6d24-8bf9-2911-3992.sa.ngrok.io/Home`,
+ })
+
+ console.log(result)
+ res.send(result.body)
+})
+
+paymentRouter.post("/webhook", (req, res) => {
+  console.log(req.query)
+  res.send("webook")
+})
 
 // Pagos por 3 meses
-paymentRouter.post("/create_preference/:id", (req, res) => {
+// paymentRouter.post("/create_preference/:id", (req, res) => {
 
-  const {id} = req.params
+//   const {id} = req.params
 
-  console.log("userId",id)
-  let preference = {
-    items: [
-      {
-        title: "Cris Velasco BJJ",
-        unit_price: 1,
-        quantity: 1,
-      },
-    ],
-    back_urls: {
-      success: `http://localhost:5173/paymentAproved/`,
-      failure: `http://localhost:5173/paymentFailed/`,
-      pending: "",
-    },
-    auto_return: "approved",
-    currency_id: "ARS",
-  };
+//   console.log("userId",id)
+//   let preference = {
+//     items: [
+//       {
+//         title: "Cris Velasco BJJ",
+//         unit_price: 1,
+//         quantity: 1,
+//       },
+//     ],
+//     back_urls: {
+//       success: `http://localhost:5173/paymentAproved/`,
+//       failure: `http://localhost:5173/paymentFailed/`,
+//       pending: "",
+//     },
+//     auto_return: "approved",
+//     currency_id: "ARS",
+//   };
 
-  mercadopago.preferences
-    .create(preference)
-    .then((response) => {
-      const paymentId = response.body.id;
-      const { id } = req.params;
-      res.status(200).json({ message: "Pago exitoso" });
-    })
-    .catch((error) => {
-      console.log(error);
-      res.status(400).json({ error: error.message });
-    });
-});
+//   mercadopago.preferences
+//     .create(preference)
+//     .then((response) => {
+//       const paymentId = response.body.id;
+//       const { id } = req.params;
+//       res.status(200).json({ message: "Pago exitoso" });
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//       res.status(400).json({ error: error.message });
+//     });
+// });
 
 // Suscripciones por mes
 
