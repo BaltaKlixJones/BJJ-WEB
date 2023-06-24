@@ -70,7 +70,7 @@ const getUserController = async () => {
   
   //   for (const user of usersToUpdate) {
   //     try {
-  //       if ( user.email == "balta98_@hotmail.com" ) {
+  //       if ( user.email == "cristobal.bjjonline@gmail.com" ) {
   //         continue;
   //       }
   //       user.subscription = false;
@@ -99,7 +99,7 @@ const getUserController = async () => {
   
     for (const user of usersToUpdate) {
       try {
-        if (user.email === "balta98_@hotmail.com") {
+        if (user.email === "cristobal.bjjonline@gmail.com") {
           continue;
         }
   
