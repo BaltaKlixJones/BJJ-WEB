@@ -33,7 +33,7 @@ paymentRouter.post("/create_preference/:id", async (req, res) => {
   //  notification_url: `https://afa7-2800-22c3-80-d5-6d24-8bf9-2911-3992.sa.ngrok.io/Home`,
  })
 
- console.log(result)
+//  console.log(result)
  res.send(result.body)
 })
 
@@ -98,7 +98,7 @@ paymentRouter.post("/createPlan/:id", (req, res) => {
       frequency_type: "months",
       repetitions: null,
       billing_day_proportional: false,
-      transaction_amount: 5,
+      transaction_amount: 4000,
       currency_id: "ARS",
       start_date: new Date(),
     },

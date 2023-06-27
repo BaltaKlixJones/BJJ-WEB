@@ -101,7 +101,7 @@ router.get('/signin', (req, res, next) => {
 router.post('/signin', passport.authenticate('local-signin', {
   successRedirect: '/users',
   failureRedirect: '/users',
-  failureFlash: true
+  passReqToCallback: true
 }), (req, res) => {
     return res.json({ data: req.user });
     

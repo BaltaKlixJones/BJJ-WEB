@@ -36,7 +36,7 @@ function enviarCorreoCambioContrasena (req, res) {
               from: 'crisvelascobjj@gmail.com',
               to: destinatarioEmail,
               subject: 'Reestablecer Contraseña',
-              text: `Hola! ${destinatarioEmail} \n¿Olvidaste tu contraseña? No te preocupes.\n\nIngresa al siguiente link: http://localhost:5173/changePassword/${destinatarioId}.\n\n \t¡No compartas este link con nadie!`
+              text: `Hola! ${destinatarioEmail} \n¿Olvidaste tu contraseña? No te preocupes.\n\nIngresa al siguiente link: http://localhost:5173/#/changePassword/${destinatarioId}.\n\n \t¡No compartas este link con nadie!`
             };
 
             transporter.sendMail(mailOptions, function (error, info) {
