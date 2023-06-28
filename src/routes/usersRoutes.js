@@ -1,6 +1,6 @@
 const {Router } = require("express");
 const userRouter = Router();
-const {getUserHandler, putUserHandler, deleteUserHandler} = require('../handlers/userHandler.js');
+const {getUserHandler, putUserHandler, deleteUserHandler} = require('../handlers/UserHandler.js');
 
 userRouter.get('/', getUserHandler);
 userRouter.delete('/:id', deleteUserHandler);

@@ -5,7 +5,7 @@ const {
     putVideoHandler,
     deleteVideoHandler,
     getVideosByCategoryIdHandler
-} = require("../handlers/videoHandler");
+} = require("../handlers/VideoHandler");
 const videorouter = Router();
 
 
