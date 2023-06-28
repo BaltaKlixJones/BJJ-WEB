@@ -1,4 +1,4 @@
-const {getUserController, putUserController, deleteUserController} = require('../controllers/userController.js');
+const {getUserController, putUserController, deleteUserController} = require('../controllers/UserController.js');
 
 const getUserHandler = async (req, res) => {
     try {
