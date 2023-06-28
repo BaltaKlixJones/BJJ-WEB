@@ -44,15 +44,15 @@ router.get('/getUserByEmailToken/:token', (req, res) => {
 });
 
 // Home
-router.get('/', (req, res, next) => {
-  res.render('index');
-});
+// router.get('/', (req, res, next) => {
+//   res.render('index');
+// });
 
 
 // Registar usuario
-router.get('/signup', (req, res, next) => {
-  res.render('signup');
-});
+// router.get('/signup', (req, res, next) => {
+//   res.render('signup');
+// });
 
 router.post('/signup', passport.authenticate('local-signup', {
   successRedirect: '/users',
@@ -73,29 +73,9 @@ router.put("/update", passport.authenticate("local-changePassword", {
 })
 
 // Login usuario
-router.get('/signin', (req, res, next) => {
-  res.render('signin');
-});
-
-// router.post('/signin', passport.authenticate('local-signin', {
-//   successRedirect: '/Home',
-//   failureRedirect: '/signIn',
-//   failureFlash: true
-// }));
-
-// router.post('/signin', passport.authenticate('local-signin', {
-//   successRedirect: '/Home',
-//   failureRedirect: '/signin',
-//   failureFlash: true
-// }), (req, res) => {
-//   res.json({ user: req.user });
+// router.get('/signin', (req, res, next) => {
+//   res.render('signin');
 // });
-
-// router.post('/signin', passport.authenticate('local-signin'), (req, res) => {
-//   res.json({ user: req.user });
-// }
-// );
-
 
 
 router.post('/signin', passport.authenticate('local-signin', {

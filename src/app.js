@@ -22,9 +22,9 @@ const server = express();
 server.name = 'API';
 
 // Settings
-server.set('views', path.join(__dirname, 'views'))
-server.engine('ejs', engine)
-server.set('view engine', 'ejs')
+// server.set('views', path.join(__dirname, 'views'))
+// server.engine('ejs', engine)
+// server.set('view engine', 'ejs')
 
 // Middlewares
 server.use(bodyParser.urlencoded({ extended: true, limit: '50mb' }));
