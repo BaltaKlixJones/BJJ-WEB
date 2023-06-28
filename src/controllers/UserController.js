@@ -16,21 +16,7 @@ const getUserController = async () => {
     return userDelete.destroy();
   }
 
-  // const putUserController = async (
-  //   id,
-  //   { email, password, status },
-  //   res
-  // ) => {
-  //   const userUpdate = await User.findByPk(id);
-  //   !userUpdate
-  //     ? res.status(400).json({ error: "User not found" })
-  //     : userUpdate.update({
-  //       email,
-  //       password,
-  //       status,
-  //       });
-  //   return userUpdate;
-  // };
+ 
   const putUserController = async (id, { email, password, status, subscription, subscriptionDate, subscriptionDateEnd, subscriptionType }, res) => {
     const userUpdate = await User.findByPk(id);
     if (!userUpdate) {
@@ -50,37 +36,7 @@ const getUserController = async () => {
   };
 
 //Verificar suscripciones
-  // cron.schedule("*/1 * * * *", async () => {
-  //   console.log("Running cron job");
-  //   const oneMinuteAgo = new Date();
   
-  //   oneMinuteAgo.setMinutes(oneMinuteAgo.getMinutes() - 3);
-  
-  //   console.log(oneMinuteAgo)
-  
-  //   const usersToUpdate = await User.findAll({
-  //     where: {
-  //       status: "active",
-  //       subscription: true,
-  //       subscriptionDate: {
-  //         [Sequelize.Op.lt]: oneMinuteAgo,
-  //       },
-  //     },
-  //   });
-  
-  //   for (const user of usersToUpdate) {
-  //     try {
-  //       if ( user.email == "cristobal.bjjonline@gmail.com" ) {
-  //         continue;
-  //       }
-  //       user.subscription = false;
-  //       await user.save();
-  //       console.log('User saved:', user.id);
-  //     } catch (error) {
-  //       console.error('Error saving user:', error);
-  //     }
-  //   }
-  // });
   cron.schedule("0 */12 * * *", async () => {
     console.log("Running cron job");
   
