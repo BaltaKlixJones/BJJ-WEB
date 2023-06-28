@@ -4,7 +4,7 @@ const router = require(".");
 require("dotenv").config();
 const { User } = require("../db");
 require("dotenv").config();
-const { ACCESS_TOKEN} = process.env;
+const { ACCESS_TOKEN, SUCCESS_URL_MP, FAIL_URL_MP} = process.env;
 const axios = require("axios");
 
 const paymentRouter = Router();
@@ -25,8 +25,8 @@ paymentRouter.post("/create_preference/:id", async (req, res) => {
     quantity: 1,
   }],
   back_urls: {
-    success: `http://localhost:5173/paymentAproved/`,
-    failure: `http://localhost:5173/paymentFailed/`,
+    success: SUCCESS_URL_MP,
+    failure: FAIL_URL_MP,
     pending: "",
   },
   auto_return: "approved",
